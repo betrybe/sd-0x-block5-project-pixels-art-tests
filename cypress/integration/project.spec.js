@@ -409,9 +409,17 @@ describe('10 - Faça o quadro de pixels ter seu tamanho definido pelo usuário.'
     let alerted = false;
     cy.on('window:alert', (msg) => alerted = msg);
 
-    cy.get('#generate-board')
-      .click()
-      .then(() => expect(alerted).to.match(/Board inválido!/i));
+    cy.get('#board-size').should(($input) => {
+      const val = $input.val()
+
+      if(val !== ""){
+        cy.get('#board-size').clear()
+      }
+      
+      cy.get('#generate-board')
+        .click()
+        .then(() => expect(alerted).to.match(/Board inválido!/i));
+    })
   });
 
   it('Verifica se ao clicar no botão com um valor preenchido, o tamanho do board muda.', () => {
